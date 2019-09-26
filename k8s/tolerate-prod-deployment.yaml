@@ -1,0 +1,33 @@
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+   name: prod
+  spec:
+   replicas: 1
+   selector:
+     matchLabels:
+       app: prod
+   template:
+     metadata:
+       labels:
+         app: prod
+     spec:
+       containers:
+       - args:
+         - sleep
+         - "3600"
+         image: busybox
+         name: main
+       nodeSelector:
+         disk: ssd # selecting the node having labelled as disk=ssd
+       tolerations:
+       - key: node-type
+         operator: Equal
+         value: prod
+         effect: NoSchedule
+
+
+  # kubectl taint node ip-10-0-1-102 node-type=prod:NoSchedule
+  # for untainting a node
+  # kubectl taint node ip-10-0-1-102 node-type-
+  #k taint node <node-name> type=prod:NoSchedule
