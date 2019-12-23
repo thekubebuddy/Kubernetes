@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: apache
-          image: docker-img
+          image: ${parameters.docker-img}
           resources:
             limits:
               memory: 100Mi
