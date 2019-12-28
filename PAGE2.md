@@ -1,4 +1,4 @@
-## Quick installation 
+### 1.Quick installation 
 ```
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -22,7 +22,7 @@ sudo apt-mark hold kubelet kubeadm kubectl docker-ce
 
 ```
 
-## Upgrading the kubernetes cluster component
+### 2.Upgrading the kubernetes cluster component
 
 1. Upgrading the kubeadm component to the desired state
 ```
@@ -67,5 +67,10 @@ curl -sSL https://dl.k8s.io/release/${VERSION}/bin/linux/${ARCH}/kubectl > kubec
 sudo install -o root -g root -m 0755 ./kubectl /usr/bin/kubectl
 kubectl version # On master also
 ```
+
+### 3.Network Policies in k8s
+1. Network policies allows pods to allow or deny traffic with the cluster
+2. NetworkPolicy uses selectors to apply rules to pods within the cluster
+3. NetworkPolicy is supported by plugin called ["canal"](https://docs.projectcalico.org/v3.5/getting-started/kubernetes/installation/hosted/canal/canal.yaml)
 
 
