@@ -1,4 +1,4 @@
-## Table of Contents
+Table of Contents
 =================
 <!--ts-->
    * [Installation](#1. Quick installation  of k8s components)
