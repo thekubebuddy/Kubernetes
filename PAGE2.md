@@ -1,7 +1,7 @@
 Table of Contents
 =================
 <!--ts-->
-   * [Installation](https://github.com/ishaq4466/Kubernetes/blob/master/PAGE2.md#1-quick-installation--of-k8s-components)
+   1. [Installation](https://github.com/ishaq4466/Kubernetes/blob/master/PAGE2.md#1-quick-installation--of-k8s-components)
 <!--te-->
 
 
