@@ -2,6 +2,7 @@ Table of Contents
 =================
 <!--ts-->
    1. [Installation](https://github.com/ishaq4466/Kubernetes/blob/master/PAGE2.md#1-quick-installation--of-k8s-components)
+   2. [Upgrading the cluster components](### 2. Upgrading the kubernetes cluster components)
 <!--te-->
 
 
@@ -30,7 +31,7 @@ sudo apt-mark hold kubelet kubeadm kubectl docker-ce
 
 ```
  
-### 2. Upgrading the kubernetes cluster component
+### 2. Upgrading the kubernetes cluster components
 
 1. Upgrading the kubeadm component to the desired state
 ```
