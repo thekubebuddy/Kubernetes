@@ -396,28 +396,123 @@ spec:
 
 ### [7. Monitoring and Logging cluster components and Applications](https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/)
 1. Metric server
-* Metric server enables us to monitor the CPU and memory utilization at cluster level as well as at pod and container level
+* Metric server enables us to monitor the **CPU and memory utilization** at cluster level as well as at pod and container level
 * Installation of Metric server:
 ```
-
-# 
-kubectl apply -f ~/metrics-server/deploy/1.8+/
+git clone https://github.com/ishaq4466/Kubernetes
+# Installing for apiVersion 1.8+, can be known by using
+k version --short 
+k apply -f Kubernetes/metrics-server/deploy/1.8+/
 # Getting the response back from metric server API
 kubectl get --raw /apis/metrics.k8s.io/
-
 ```
-* Handy command to monitor the metrics:
+* Handy command to monitor the cpu  metrics:
 ```
-k top no
-k top po
+k top no # Getting the nodes cpu and memory utilization 
+k top po 
 k top po --all-namespace
 k top po -n kube-system
 k top po -l app=nginx -n web
 k top po multi-containers --containers
 k top po multi-containers --containers 
 ```
+2. Monitoring application health through ["Liveness and Readiness probe"](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes)
+* Liveness Probe: Checks whether the container is live or not
+* Readiness Probe: Checks wheter the container is ready to serve the client request is ready or not
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness
+  labels:
+    app: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 80
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 80
+      initialDelaySeconds: 5
+      periodSeconds: 5
 
-### Trobleshooting
+```
+
+* The below yaml fails in l
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness
+  labels:
+    app: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 8080
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 5
+```
+3. Monitoring the logs of cluster-component
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: counter
+spec:
+  containers:
+  - name: count
+    image: busybox
+    args:
+    - /bin/sh
+    - -c
+    - >
+      i=0;
+      while true;
+      do
+        echo "$i: $(date)" >> /var/log/1.log;
+        echo "$(date) INFO $i" >> /var/log/2.log;
+        i=$((i+1));
+        sleep 1;
+      done
+    volumeMounts:
+    - name: varlog
+      mountPath: /var/log
+  volumes:
+  - name: varlog
+    emptyDir: {}
+```
+
+
+### 8. Troubleshooting
+1. Woker node failure issues
+```
+sudo systemctl status docker
+sudo systemctl enable docker && systemctl start docker
+sudo su -
+swapoff -a && sed -i '/ swap / s/^/#/' /etc/fstab
+sudo systemctl status kubelet
+sudo systemctl enable kubelet && systemctl start kubelet
+sudo kubeadm token generate
+sudo kubeadm token create [token_name] --ttl 2h --print-join-command
+sudo kubeadm token create [token_name] --ttl 2h --print-join-command
+
+sudo more /var/log/syslog | tail -120 | grep kubelet
+```
+
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
 
