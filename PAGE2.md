@@ -133,7 +133,7 @@ spec:
   ingress:
   - from:
     - ipBlock:
-        cidr: 192.168.1.0/24		# All 254 pods with ipBlock can communicate with the pods
+        cidr: 192.168.1.0/24 # All 254 pods with that ip Range can communicate with the pods that matches app:db
 ```
 
 4. Namespacewide net policy
@@ -267,25 +267,140 @@ kubectl patch sa default -p '{"imagePullSecrets": [{"name": "<secret-name>"}]}'
 * This ensures the security stability of the containers. 
 * "securityContext" can be added to the pod-yaml file which is applied to all the containers within the pod or it can be applied to container spec where it applies to that specfic container.
 * We can also set the [linux capabities](http://man7.org/linux/man-pages/man7/capabilities.7.html) for the containers by using the "capabilities" attribute for the securityContext
-1. Running the nginx pod with user as nginx and group also as nginx
+
+1. runAsUser,runAsGroup, runAsNonRoot
+Running the nginx pod with user and group as nginx 
 ```
 apiVersion: v1
 kind: Pod
 metadata:
   name: nginx-user-context
 spec:     
-  fsGroup: 9999 # fs group is 999 i.e file created will have 999 fileid
   containers:
   - name: main
     image: nginx
     command: ["/bin/sleep", "999999"]
     securityContext:
-      runAsUser: 101 # 101 id is for nginx, for knowing that you can cat /etc/passwd for the nginx pod
+      runAsNonRoot: true # if you dont know the user-id than this can be set to "true" for running container as non-root
+      runAsUser: 101 # 101 uid is for nginx, for knowing that you can cat /etc/passwd for the nginx pod
       runAsGroup: 101
-      runAsNonRoot: true 
+```
+*if you want to run the container as root than, set runAsNonRoot: false(Not a good practice though)*
+
+2. [privileged-pod](https://kubernetes.io/docs/concepts/policy/pod-security-policy/#privileged)
+By default the container in the pod does not have access to any devices on host
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: privileged-pod
+spec:
+  containers:
+  - name: main
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      privileged: true
+```
+Running the below cmd will return more devices as compared to normal pod
+```
+kubectl exec -it privileged-pod ls /dev
+```
+3. [capabilites](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-capabilities-for-a-container)
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kernelchange-pod
+spec:
+  containers:
+  - name: main
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      capabilities:
+        add:				# "drop" can be used to drop-down the capabilities
+        - SYS_TIME
+```
+The container will have capability to change the time
+```
+kubectl exec -it kernelchange-pod -- date +%T -s "12:00:00"
+```
+Similarly we can provide many [capabilities](http://man7.org/linux/man-pages/man7/capabilities.7.html)
+
+4. Reading and writing to the file-system
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readonly-pod
+spec:
+  containers:
+  - name: main
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      readOnlyRootFilesystem: true # if set to "false", be able to write to '/'
+    volumeMounts:
+    - name: my-volume
+      mountPath: /volume
+      readOnly: false
+  volumes:
+  - name: my-volume
+    emptyDir:
+```
+The pod can read only the **"local filesystem"** but cannot write to it.
+```
+k exec -it readonly-pod touch /file1 #error will be raised
+```
+However it can write to **"container's local filesystem" i.e on /volume** 
+```
+k exec -it readonly-pod touch /volume/file1 #will not
 ```
 
-101-> nginx
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: group-context
+spec:
+  securityContext:
+    fsGroup: 555
+    supplementalGroups: [666, 777]
+  containers:
+  - name: first
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      runAsUser: 1111
+    volumeMounts:
+    - name: shared-volume
+      mountPath: /volume
+      readOnly: false
+  - name: second
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      runAsUser: 2222
+    volumeMounts:
+    - name: shared-volume
+      mountPath: /volume
+      readOnly: false
+  volumes:
+  - name: shared-volume
+    emptyDir:
+#k exec -it group-context -c first sh
+```
+
+
+### 7. Cluster component Monitoring :electric_plug:
+```
+kubectl apply -f ~/metrics-server/deploy/1.8+/
+kubectl get --raw /apis/metrics.k8s.io/
+```
+
+
 ### Trobleshooting
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
@@ -293,4 +408,66 @@ spec:
 
 
 
+
+
+
+
+
+
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-nonroot
+spec:
+  containers:
+  - name: main
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      runAsNonRoot: false
+
+
+
+# This pod will have the capabilities to change the SYS_TIME
+
+k exec kernelchange-pod -- date "+%T" -s "12:00:00"
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kernelchange-pod
+spec:
+  containers:
+  - name: main
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      capabilities:
+        add:
+        - SYS_TIME
+
+
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: readonly-pod
+spec:
+  containers:
+  - name: main
+    image: alpine
+    command: ["/bin/sleep", "999999"]
+    securityContext:
+      readOnlyRootFilesystem: false
+    volumeMounts:
+    - name: my-volume
+      mountPath: /volume
+      readOnly: false
+  volumes:
+  - name: my-volume
+    emptyDir:
 
