@@ -394,80 +394,30 @@ spec:
 ```
 
 
-### 7. Cluster component Monitoring :electric_plug:
-```
-kubectl apply -f ~/metrics-server/deploy/1.8+/
-kubectl get --raw /apis/metrics.k8s.io/
+### [7. Monitoring and Logging cluster components and Applications](https://kubernetes.io/docs/tasks/debug-application-cluster/resource-usage-monitoring/)
+1. Metric server
+* Metric server enables us to monitor the CPU and memory utilization at cluster level as well as at pod and container level
+* Installation of Metric server:
 ```
 
+# 
+kubectl apply -f ~/metrics-server/deploy/1.8+/
+# Getting the response back from metric server API
+kubectl get --raw /apis/metrics.k8s.io/
+
+```
+* Handy command to monitor the metrics:
+```
+k top no
+k top po
+k top po --all-namespace
+k top po -n kube-system
+k top po -l app=nginx -n web
+k top po multi-containers --containers
+k top po multi-containers --containers 
+```
 
 ### Trobleshooting
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
-
-
-
-
-
-
-
-
-
-
-
-
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: alpine-nonroot
-spec:
-  containers:
-  - name: main
-    image: alpine
-    command: ["/bin/sleep", "999999"]
-    securityContext:
-      runAsNonRoot: false
-
-
-
-# This pod will have the capabilities to change the SYS_TIME
-
-k exec kernelchange-pod -- date "+%T" -s "12:00:00"
-apiVersion: v1
-kind: Pod
-metadata:
-  name: kernelchange-pod
-spec:
-  containers:
-  - name: main
-    image: alpine
-    command: ["/bin/sleep", "999999"]
-    securityContext:
-      capabilities:
-        add:
-        - SYS_TIME
-
-
-
-
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: readonly-pod
-spec:
-  containers:
-  - name: main
-    image: alpine
-    command: ["/bin/sleep", "999999"]
-    securityContext:
-      readOnlyRootFilesystem: false
-    volumeMounts:
-    - name: my-volume
-      mountPath: /volume
-      readOnly: false
-  volumes:
-  - name: my-volume
-    emptyDir:
 
