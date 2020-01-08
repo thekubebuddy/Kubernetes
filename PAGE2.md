@@ -1,12 +1,13 @@
 Table of Contents
 =================
-<!--ts-->
    1. [Installation](https://github.com/ishaq4466/Kubernetes/blob/master/PAGE2.md#1-quick-installation-of-k8s-components)
    2. [Upgrading the cluster components](#2-Upgrading-the-kubernetes-cluster-components)
    3. [NetworkPolicy in k8s](#3-Network-Policies-in-k8s)
-<!--te-->
-
-
+   4. [CA and TLS](#4-CA-and-TLS)
+   5. [Private Docker Registery Configuration in k8s](#5Private-Docker-Registery-in-k8s)
+   6. [Securitiy Context in k8s](#securityContext)
+   7. [Monitoring and Logging cluster components and Applications](#7Monitoring-and-Logging-cluster-components-#and-Alications)
+   8. [Troubleshooting k8s cluster](#Troubleshooting-k8s-cluster)
 
 ### 1. Quick installation of k8s components
 ```
