@@ -4,10 +4,10 @@ Table of Contents
    2. [Upgrading the cluster components](#2-Upgrading-the-kubernetes-cluster-components)
    3. [NetworkPolicy in k8s](#3-Network-Policies-in-k8s)
    4. [CA and TLS](#4-CA-and-TLS)
-   5. [Private Docker Registery Configuration in k8s](#5Private-Docker-Registery-in-k8s)
+   5. [Private Docker Registery Configuration in k8s](#5-Private-Docker-Registery-in-k8s)
    6. [Securitiy Context in k8s](#securityContext)
-   7. [Monitoring and Logging cluster components and Applications](#7Monitoring-and-Logging-cluster-components-#and-Alications)
-   8. [Troubleshooting k8s cluster](#Troubleshooting-k8s-cluster)
+   7. [Monitoring and Logging cluster components and Applications](#7-Monitoring-and-Logging-cluster-components-and-Alications)
+   8. [Troubleshooting k8s cluster](#8-Troubleshooting-k8s-cluster)
 
 ### 1. Quick installation of k8s components
 ```
