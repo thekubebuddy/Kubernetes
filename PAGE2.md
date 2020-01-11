@@ -6,8 +6,10 @@ Table of Contents
    4. [CA and TLS](#4-CA-and-TLS)
    5. [Private Docker Registery Configuration in k8s](#5-Private-Docker-Registery-in-k8s)
    6. [Securitiy Context in k8s](#securityContext)
-   7. [Monitoring and Logging cluster components and Applications](#7-Monitoring-and-Logging-cluster-components-and-Alications)
-   8. [Troubleshooting k8s cluster](#8-Troubleshooting-k8s-cluster)
+   7. [Monitoring and Logging cluster components and Applications](#7-monitoring-and-logging-cluster-components-and-applications)
+   8. [Troubleshooting k8s cluster](#8-troubleshooting)
+   9. [Minikube](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04) [Installation](https://kubernetes.io/docs/tasks/tools/install-minikube/#before-you-begin)
+
 
 ### 1. Quick installation of k8s components
 ```
