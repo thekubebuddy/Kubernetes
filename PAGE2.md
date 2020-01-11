@@ -32,7 +32,7 @@ sudo apt-get install -y kubelet=1.12.7-00 kubeadm=1.12.7-00 kubectl=1.12.7-00
 sudo apt-mark hold kubelet kubeadm kubectl docker-ce
 ```
 
-adding the current user in the docker group so that we dont use sudo docker again and again
+**Adding** the current user in the docker group so that we **dont use sudo docker again and again**
 ```
 sudo usermod -aG docker ${USER}
 su - ${USER}
@@ -66,7 +66,9 @@ sudo install -o root -g root -m 0755 ./kubelet /usr/bin/kubelet
 sudo systemctl restart kubelet.service
 kubectl get nodes # installation verification
 
-# Installing the kubectl also
+# Installing the kubectl(client) also
+export VERSION=v1.13.5
+export ARCH=amd64
 curl -sSL https://dl.k8s.io/release/${VERSION}/bin/linux/${ARCH}/kubectl > kubectl
 sudo install -o root -g root -m 0755 ./kubectl /usr/bin/kubectl
 kubectl version
@@ -520,6 +522,24 @@ sudo kubeadm token create [token_name] --ttl 2h --print-join-command
 sudo more /var/log/syslog | tail -120 | grep kubelet
 ```
 
+### 9. Minikube
+
+* Minikube is really helpfull if you want to practice k8s on a single node cluster, it offers that functionality.
+* Minikube allows to run k8s cluster locally, if the underlying system support virtualization
+* "minikube" Installation and some cmd is listed below:
+```
+# Installing minikube with specific k8s api-version and vm-drivers 
+minikube start --vm-driver virtualbox --kubernetes-version v1.16.0
+```
+```
+# for commicating with the docker daemon-installed inside "minikube" vm 
+eval $(minikube docker-env)
+```
+```
+# Enabling the k8s dashboard which comes pre-installed for minikube
+minikube dashboard
+```
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
 
+(docker installation)[https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04]
