@@ -30,9 +30,13 @@ sudo apt-get install -y kubelet=1.12.7-00 kubeadm=1.12.7-00 kubectl=1.12.7-00
 
 
 sudo apt-mark hold kubelet kubeadm kubectl docker-ce
+```
 
-
-
+adding the current user in the docker group so that we dont use sudo docker again and again
+```
+sudo usermod -aG docker ${USER}
+su - ${USER}
+id -nG
 ```
  
 ### 2. Upgrading the kubernetes cluster components
