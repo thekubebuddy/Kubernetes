@@ -8,8 +8,7 @@ Table of Contents
    6. [Securitiy Context in k8s](#securityContext)
    7. [Monitoring and Logging cluster components and Applications](#7-monitoring-and-logging-cluster-components-and-applications)
    8. [Troubleshooting k8s cluster](#8-troubleshooting)
-   9. [Minikube](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04) [Installation](https://kubernetes.io/docs/tasks/tools/install-minikube/#before-you-begin)
-
+   9. [Minikube]
 
 ### 1. Quick installation of k8s components
 ```
@@ -526,10 +525,12 @@ sudo more /var/log/syslog | tail -120 | grep kubelet
 
 * Minikube is really helpfull if you want to practice k8s on a single node cluster, it offers that functionality.
 * Minikube allows to run k8s cluster locally, if the underlying system support virtualization
-* "minikube" Installation and some cmd is listed below:
+* "minikube" Installation and some cmd is listed below
+
+1. Installing [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/#before-you-begin) with [vmbox](https://matthewpalmer.net/kubernetes-app-developer/articles/install-kubernetes-ubuntu-tutorial.html) on ubuntu
 ```
 # Installing minikube with specific k8s api-version and vm-drivers 
-minikube start --vm-driver virtualbox --kubernetes-version v1.16.0
+minikube start --vm-driver virtualbox --kubernetes-version v1.17.0
 ```
 ```
 # for commicating with the docker daemon-installed inside "minikube" vm 
@@ -539,6 +540,12 @@ eval $(minikube docker-env)
 # Enabling the k8s dashboard which comes pre-installed for minikube
 minikube dashboard
 ```
+
+```
+# start minikube with "none" vm-driver 
+sudo minikube start --vm-driver=none --kubernetes=1.16.2
+```
+
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
 
