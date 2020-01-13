@@ -8,7 +8,7 @@ Table of Contents
    6. [Securitiy Context in k8s](#securityContext)
    7. [Monitoring and Logging cluster components and Applications](#7-monitoring-and-logging-cluster-components-and-applications)
    8. [Troubleshooting k8s cluster](#8-troubleshooting)
-   9. [Minikube]
+   9. [Minikube](#9-minikube)
 
 ### 1. Quick installation of k8s components
 ```
