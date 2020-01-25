@@ -9,6 +9,8 @@ Table of Contents
    7. [Monitoring and Logging cluster components and Applications](#7-monitoring-and-logging-cluster-components-and-applications)
    8. [Troubleshooting k8s cluster](#8-troubleshooting)
    9. [Minikube](#9-minikube)
+   10. Context switching(#)
+   11. Deleting the namespace forcefully()
 
 ### 1. Quick installation of k8s components
 ```
@@ -540,11 +542,33 @@ eval $(minikube docker-env)
 # Enabling the k8s dashboard which comes pre-installed for minikube
 minikube dashboard
 ```
-
 ```
 # start minikube with "none" vm-driver 
-sudo minikube start --vm-driver=none --kubernetes=1.16.2
+sudo minikube start --vm-driver=none --kubernetes-version=1.16.2
 ```
+* **Starting minikube with custom resource capactity by default it spins with 2Gi and 2cores**
+```
+# spinning a k8s cluster with 8Gi of RAM, 4cpu's, disk-size of 50gb
+minikube start --vm-driver=virtualbox --kubernetes-version=1.16.0 --memory=8192 --cpus=4 --disk-size=50g
+```
+10. Context Switching
+``` 
+k config get-contexts
+k config use-context <context-names>
+# setting up the namespace
+k config set-context --current --namespace=<your-namespace>
+```
+11. Forcefully deleting the namespace
+```
+(
+NAMESPACE=your-rogue-namespace
+kubectl proxy &
+kubectl get namespace $NAMESPACE -o json |jq '.spec = {"finalizers":[]}' >temp.json
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json 127.0.0.1:8001/api/v1/namespaces/$NAMESPACE/finalize
+)
+```
+
+
 
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
