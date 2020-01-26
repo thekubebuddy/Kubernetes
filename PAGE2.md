@@ -11,7 +11,8 @@ Table of Contents
    9. [Minikube](#9-minikube)
    10. Context switching(#)
    11. Deleting the namespace forcefully()
-
+   12. Kubernetes imperative cheetsheet
+   13. Scheduller in K8s
 ### 1. Quick installation of k8s components
 ```
 sudo apt-get install software-properties-common
@@ -551,14 +552,16 @@ sudo minikube start --vm-driver=none --kubernetes-version=1.16.2
 # spinning a k8s cluster with 8Gi of RAM, 4cpu's, disk-size of 50gb
 minikube start --vm-driver=virtualbox --kubernetes-version=1.16.0 --memory=8192 --cpus=4 --disk-size=50g
 ```
-10. Context Switching
+
+### 10. Context Switching
 ``` 
 k config get-contexts
 k config use-context <context-names>
 # setting up the namespace
 k config set-context --current --namespace=<your-namespace>
 ```
-11. Forcefully deleting the namespace
+
+### 11. Forcefully deleting the namespace
 ```
 (
 NAMESPACE=your-rogue-namespace
@@ -566,6 +569,78 @@ kubectl proxy &
 kubectl get namespace $NAMESPACE -o json |jq '.spec = {"finalizers":[]}' >temp.json
 curl -k -H "Content-Type: application/json" -X PUT --data-binary @temp.json 127.0.0.1:8001/api/v1/namespaces/$NAMESPACE/finalize
 )
+```
+
+
+### 12. Kubernetes imperative cheetsheet
+```
+# common images nginx:alpine redis:alpine
+
+k config set-context $(k config current-context) --namespace=new
+
+# Dry-running the nginx pod creation and it will provide us the yaml
+k run nginx --generator=run-pod/v1 --image=nginx:alpine --namespace=default --dry-run -o yaml 
+
+# apk update && apk add busybox-extras curl
+
+# DR the nginx deployment generating the yaml 
+k create deploy nginx --image=nginx:alpine --namespace=default --dry-run -o yaml 
+
+# Scaling up the replicas within the nginx deploy
+k scale deploy nginx --replicas=3
+
+# Getting all pods in all namespace showing all the labels and all the nodes in which it is scheduled
+k get po --all-namespaces --show-labels -o wide
+
+# Labels 
+k get po --show-labels -l tier=frontend 
+k get all --show-labels -l env=prod
+
+k get all --selector env=prod,tier=frontend # get all with env prod and tier is frontend 
+# Exposing a pod
+```
+
+### 13. Scheduller in K8s
+* Every pod definition has a field names "nodeName" trough which you can scedule a pod to a specific Node
+
+**Manually schedulling a pod to a node if the scheduler is not running up**
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  -  image: nginx
+     name: nginx
+  nodeName:
+    node01
+```
+
+**Taints and tolerations***
+```
+k taint node node1 spary=blue:NoSchedule
+
+tolerations
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+    labels:
+    run: mosquito  
+    name: bee
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: mosquito    
+    resources: {}  
+    tolerations:
+    - key: "spray"    
+      operator: "Equal"
+      value: "mortein"    
+      effect: "NoSchedule"
 ```
 
 
