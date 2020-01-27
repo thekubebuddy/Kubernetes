@@ -9,6 +9,8 @@ Table of Contents
    7. [Monitoring and Logging cluster components and Applications](#7-monitoring-and-logging-cluster-components-and-applications)
    8. [Troubleshooting k8s cluster](#8-troubleshooting)
    9. [Minikube](#9-minikube)
+      * [Installing](#1-installing-minikube-is-quite-simple-and-easy-for-installation-first-check-whether-the-system-supports-virtualization-or-not)
+      * [Cluster Creation](#2-creating-minikube-cluster) 
    10. [Context switching](#10-context-switching)
    11. [Deleting the namespace forcefully](#11-forcefully-deleting-the-namespace)
    12. [Kubernetes imperative cheetsheet](#12-kubernetes-imperative-cheetsheet)
