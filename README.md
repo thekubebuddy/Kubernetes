@@ -531,9 +531,10 @@ sudo more /var/log/syslog | tail -120 | grep kubelet
 * Minikube allows to run k8s cluster locally, if the underlying system support virtualization
 * "minikube" Installation and some cmd is listed below
 
-1. Installing [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/#before-you-begin) with [vmbox](https://matthewpalmer.net/kubernetes-app-developer/articles/install-kubernetes-ubuntu-tutorial.html) on ubuntu
+1. Installing minikube is quite simple and easy, for installation first check whether the system [supports virtualization or not.](https://kubernetes.io/docs/tasks/tools/install-minikube/#before-you-begin)
+Here is an easy installation guide for [minikube on ubuntu](https://matthewpalmer.net/kubernetes-app-developer/articles/install-kubernetes-ubuntu-tutorial.html).
 ```
-# Installing minikube with specific k8s api-version and vm-drivers 
+# Starting minikube cluster with specific k8s api-version and vm-drivers 
 minikube start --vm-driver virtualbox --kubernetes-version v1.17.0
 ```
 ```
