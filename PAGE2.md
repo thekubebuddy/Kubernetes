@@ -11,7 +11,7 @@ Table of Contents
    9. [Minikube](#9-minikube)
    10. [Context switching](#10-context-switching)
    11. [Deleting the namespace forcefully](#11-forcefully-deleting-the-namespace)
-   12. [Kubernetes imperative cheetsheet]
+   12. [Kubernetes imperative cheetsheet](#12-kubernetes-imperative-cheetsheet)
    13. [Scheduller in K8s](#13-scheduller-in-k8s)
    #11-forcefully-deleting-the-namespace
 ### 1. Quick installation of k8s components
