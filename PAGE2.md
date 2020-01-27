@@ -9,10 +9,11 @@ Table of Contents
    7. [Monitoring and Logging cluster components and Applications](#7-monitoring-and-logging-cluster-components-and-applications)
    8. [Troubleshooting k8s cluster](#8-troubleshooting)
    9. [Minikube](#9-minikube)
-   10. Context switching(#)
-   11. Deleting the namespace forcefully()
-   12. Kubernetes imperative cheetsheet
-   13. Scheduller in K8s
+   10. [Context switching](#10-context-switching)
+   11. [Deleting the namespace forcefully](#11-forcefully-deleting-the-namespace)
+   12. [Kubernetes imperative cheetsheet]
+   13. [Scheduller in K8s](#13-scheduller-in-k8s)
+   #11-forcefully-deleting-the-namespace
 ### 1. Quick installation of k8s components
 ```
 sudo apt-get install software-properties-common
@@ -618,6 +619,10 @@ spec:
 ```
 
 **Taints and tolerations***
+
+* Tainting does not gurantees that the pod will note goto the tolerated node instead it avoids the nodes to expect the
+intolerated pod
+
 ```
 k taint node node1 spary=blue:NoSchedule
 
@@ -642,6 +647,38 @@ spec:
       value: "mortein"    
       effect: "NoSchedule"
 ```
+* NodeSelector
+```
+# Labling a node
+k lable no node1 size=large
+# Unlabing
+k lable no node1 size-
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+    labels:
+    run: mosquito  
+    name: bee
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: mosquito    
+    resources: {}  
+    tolerations:
+    - key: "spray"    
+      operator: "Equal"
+      value: "mortein"    
+      effect: "NoSchedule"
+
+
+
+```
+
+
+
 
 
 
