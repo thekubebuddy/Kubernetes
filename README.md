@@ -15,6 +15,7 @@ Table of Contents
    11. [Deleting the namespace forcefully](#11-forcefully-deleting-the-namespace)
    12. [Kubernetes imperative cheetsheet](#12-kubernetes-imperative-cheetsheet)
    13. [Scheduller in K8s](#13-scheduller-in-k8s)
+   14. [PV and PVC](#14-pv-and-pvc)
    
 ### 1. Quick installation of k8s components
 ```
@@ -677,9 +678,75 @@ spec:
       operator: "Equal"
       value: "mortein"    
       effect: "NoSchedule"
+```
 
-
-
+14. [PV and PVC](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1)
+```
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-vol
+  labels:
+    app: nginx-vol
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /home/ishaqshaikh/k8sdata
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-pvc-claim
+  labels:
+    app: nginx-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "" # This is very important
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      app: "nginx-vol"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx
+  name: nginx
+  namespace: operations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        env:
+        - name: APP_NAME
+          value: "Hello App!"
+        volumeMounts:
+        - name: nginx-storage
+          mountPath: /data
+      volumes:
+      - name: nginx-storage
+        persistentVolumeClaim:
+          claimName: nginx-pvc-claim
 ```
 
 
