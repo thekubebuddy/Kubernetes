@@ -680,7 +680,7 @@ spec:
       effect: "NoSchedule"
 ```
 
-14. [PV and PVC](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1)
+### [14. PV and PVC](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1)
 ```
 ---
 apiVersion: v1
