@@ -16,6 +16,7 @@ Table of Contents
    12. [Kubernetes imperative cheetsheet](#12-kubernetes-imperative-cheetsheet)
    13. [Scheduller in K8s](#13-scheduller-in-k8s)
    14. [PV and PVC](#14-pv-and-pvc)
+   15. [Upgrade the cluster components](#15-upgrade-the-cluster-components)
    
 ### 1. Quick installation of k8s components
 ```
@@ -749,10 +750,60 @@ spec:
           claimName: nginx-pvc-claim
 ```
 
+### 15. Upgrade the cluster components through kubeadm
 
+**On master node**
+Step 1: drain the master node if not tainted 
+```
+k drain master --ignore-daemonset 
+```
+Step 2 : Upgrade the kubeadm first
+```
+apt-get update -y kubeadm=1.12.0-00
+```
+Step 3 : kubeadm upgrade plan
+```
+kubeadm --version
 
+# provide the suitable component versiob 
+kubeadm upgrade plan
+kubeadm upgrade apply v1.12.0
+```
+Step 4 : Kubelet and kubectl upgrade
 
+```
+# Finnnally upgrade the kubelet and kubectl version
+apt-get update -y kubelet=1.12.0-00 kubectl=1.12.0-00
+service kubelet restart
+k get no
+k version --short
 
+kubeadm upgrade node config --kubelet-version $(kubelet --version | cut -d ' ' -f 2)
+
+```
+
+Step 5: Uncorden or make the node the node Schedulable 
+```
+k uncorden master
+```
+
+**On worker node**
+
+Step 1: drain the worker node
+```
+k drain node01 --ignore-daemonset 
+```
+
+Step 2:Kubelet and kubectl upgrade
+```
+apt-get update -y kubelet=1.12.0-00 kubectl=1.12.0-00
+service kubelet restart
+```
+
+Step 3: Uncorden or make the node the node Schedulable 
+```
+k uncorden node01
+```
 
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
