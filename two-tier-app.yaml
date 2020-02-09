@@ -1,0 +1,67 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: mysql
+  name: mysql
+  namespace: default
+spec:
+  containers:
+  - env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: password123
+    image: mysql
+    imagePullPolicy: Always
+    name: mysql
+    ports:
+    - containerPort: 3306
+      protocol: TCP
+    resources: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: webapp-pod
+  name: webapp-pod
+  namespace: default
+spec:
+  containers:
+  - image: kodekloud/simple-webapp-mysql
+    envFrom:
+    - secretRef:
+        name: db-secret
+    imagePullPolicy: Always
+    name: webapp
+    resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sql01
+  namespace: default
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    name: mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-service
+  namespace: default
+spec:
+  clusterIP: 10.109.190.35
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 30080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    name: webapp-pod
+  type: NodePort
