@@ -16,8 +16,8 @@ Table of Contents
    12. [Kubernetes imperative cheetsheet](#12-kubernetes-imperative-cheetsheet)
    13. [Scheduller in K8s](#13-scheduller-in-k8s)
    14. [PV and PVC](#14-pv-and-pvc)
-   15. [Upgrade the cluster components](#15-upgrade-the-cluster-components)
-   
+   15. [Upgrade the cluster components](#15-upgrade-the-cluster-components-through-kubeadm)
+   16. [Overcommitted state](#15-overcommitted-state)
 ### 1. Quick installation of k8s components
 ```
 sudo apt-get install software-properties-common
@@ -805,6 +805,14 @@ Step 3: Uncorden or make the node the node Schedulable
 k uncorden node01
 ```
 
+
+### 16. [Overcommit state](https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-resource-requests-and-limits)
+
+**Request -> Requests are what the container is guaranteed to get**
+**Limits  -> Limits, on the other hand, make sure a container never goes above a certain value. The container is only allowed to go up to the limit, and then it is restricted.**
+
+Limits can be higher than the requests. What if you have a Node where the sum of all the container Limits is actually higher than the resources available on the machine?
+At this point, Kubernetes goes into something called an **“overcommitted state.”** Here is where things get interesting. Because CPU can be compressed, Kubernetes will make sure your containers get the CPU they requested and will throttle the rest. Memory cannot be compressed, so Kubernetes needs to start making decisions on what containers to terminate if the Node runs out of memory.
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
 
