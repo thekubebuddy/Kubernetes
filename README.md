@@ -19,6 +19,8 @@ Table of Contents
    15. [Upgrade the cluster components](#15-upgrade-the-cluster-components-through-kubeadm)
    16. [Overcommitted state](#15-overcommitted-state)
    17. [Two tier flask app](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/flask-two-tier-app.yaml)
+   18. [Mysql stack on k8s with pv](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/flask-two-tier-app.yaml)
+
 ### 1. Quick installation of k8s components
 ```
 sudo apt-get install software-properties-common
