@@ -18,6 +18,7 @@ Table of Contents
    14. [PV and PVC](#14-pv-and-pvc)
    15. [Upgrade the cluster components](#15-upgrade-the-cluster-components-through-kubeadm)
    16. [Overcommitted state](#15-overcommitted-state)
+   17. [Two tier flask app](#flask-two-tier-app.yaml)
 ### 1. Quick installation of k8s components
 ```
 sudo apt-get install software-properties-common
