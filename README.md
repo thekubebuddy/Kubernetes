@@ -17,9 +17,10 @@ Table of Contents
    13. [Scheduller in K8s](#13-scheduller-in-k8s)
    14. [PV and PVC](#14-pv-and-pvc)
    15. [Upgrade the cluster components](#15-upgrade-the-cluster-components-through-kubeadm)
-   16. [Overcommitted state](#15-overcommitted-state)
+   16. [Overcommitted state](#16-overcommit-state)
    17. [Two tier flask app](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/flask-two-tier-app.yaml)
-   18. [Mysql stack on k8s with pv](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/flask-two-tier-app.yaml)
+   18. [Mysql stack on k8s with pv](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/mysql-with-pv-stack.yaml)
+   19. [Nginx ingress controller on minikube](https://github.com/kubernetes/ingress-nginx/blob/eedcdcdbf6ab319da435de8c266a1c156eb834b3/docs/deploy/index.md#minikube)
 
 ### 1. Quick installation of k8s components
 ```
