@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: example-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: foo.bar.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: nginx
+              servicePort: nginx-port
+    - host: apple.bar.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: apple-service
+              servicePort: 5678
+    - host: banana.bar.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: banana-service
+              servicePort: 5678
