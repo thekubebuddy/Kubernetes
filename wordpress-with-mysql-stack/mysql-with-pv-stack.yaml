@@ -1,0 +1,107 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-vol
+  labels:
+    app: mysql-vol
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /tmp/mysql-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc-claim
+  labels:
+    app: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      app: "mysql-vol"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    run: mysql
+status:
+  loadBalancer: {}
+---
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: mysql
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: mysql
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: mysql
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: password123
+        - name: MYSQL_DATABASE
+          value: wordpress
+        image: mariadb:latest
+        name: mysql
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: db-sample-scripts
+          mountPath: /db-scripts
+      volumes:
+      - name: db-sample-scripts
+        configMap:
+          name: db-sample-scripts
+      - name: mysql-data
+        # hostPath: 
+        #   path: /tmp/mysql
+        persistentVolumeClaim:
+          claimName: mysql-pvc-claim
+status: {}
+---
+apiVersion: v1
+data:
+  sample-db-script: |
+    CREATE DATABASE sample_db1;
+    use sample_db1;
+    show databases;
+    CREATE TABLE Persons (PersonID int,LastName varchar(255),FirstName varchar(255),City varchar(255));
+    insert into person values('1','beda','joe','NA');
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: db-sample-scripts
+
+
