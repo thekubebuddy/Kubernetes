@@ -592,7 +592,6 @@ k config set-context $(k config current-context) --namespace=new
 
 # Dry-running the nginx pod creation and it will provide us the yaml
 k run nginx --generator=run-pod/v1 --image=nginx:alpine --namespace=default --dry-run -o yaml 
-
 # apk update && apk add busybox-extras curl
 
 # DR the nginx deployment generating the yaml 
@@ -610,6 +609,15 @@ k get all --show-labels -l env=prod
 
 k get all --selector env=prod,tier=frontend # get all with env prod and tier is frontend 
 # Exposing a pod
+
+# Alpine deployment
+k run  test-$RANDOM --rm -it --image=alpine --  sh
+apk add curl && apk add busybox-extras
+
+# Service trouble-shooting pods and cmd
+k run test-$RANDOM --imag=alpine --rm -it -- sh
+nslookup svc web.operations.svc.cluster.local
+wget -qO- --timeout=2 http://web.operations.svc.cluster.local
 ```
 
 ### 13. Scheduller in K8s
@@ -816,7 +824,40 @@ k uncorden node01
 **Limits  -> Limits, on the other hand, make sure a container never goes above a certain value. The container is only allowed to go up to the limit, and then it is restricted.**
 
 Limits can be higher than the requests. What if you have a Node where the sum of all the container Limits is actually higher than the resources available on the machine?
-At this point, Kubernetes goes into something called an **“overcommitted state.”** Here is where things get interesting. Because CPU can be compressed, Kubernetes will make sure your containers get the CPU they requested and will throttle the rest. Memory cannot be compressed, so Kubernetes needs to start making decisions on what containers to terminate if the Node runs out of memory.
+At this point, Kubernetes goes into something called an **“overcommitted state.”** Here is where things get interesting. Because CPU can be compressed, Kubernetes will make sure your containers get the CPU they requested and will throttle the rest. Memory cannot be compressed, so Kubernetes needs to start making 
+decisions on what containers to terminate if the Node runs out of memory.
+
+
+```
+1. Ip allocation range for the pods can be found by:
+k logs weave-pod -n kube-system | grep ipalloc-range
+
+2. IP allocation range for the svc can be found by quring the kube-api service:
+ps -aux | grep kube-api| grep service-cluster-ip
+
+3. Type of proxy is the kube-proxy configured to use.
+kubectl logs kube-proxy-ft6n7 -n kube-system
+```
+
+### COREDNS
+* coredns manages the dns resolution or service discovery of various svc and pods within the k8s
+* it uses a configuration file located at /etc/coredns/Corefile in the coredns pod
+* The Corefile is injected into the coredns pod as a **cm in kube-system ns**
+* in this file the top level domain name is set i.e cluster.local is set in the corefile
+* by default the pod domain name resolutions are not set by default 
+* With the core-dns pod we also have a service configured with the core-dns pod to make it available to other
+  component
+  k get svc -n kube-system
+* The ip-address of the coredns service is configured **as a nameserver in the newly pod's /ect/resolve.conf**  ,this is taken care by the kubelet component once the pod is created.
+* fqdn: web-service.namespace.svc.cluster.local
+
+
+### INGRESS
+* A layer 7 load balancer resource which supports 
+* Ingress controller examples: nginx, gcp https loadbalancer, conotur, traefik, HAPROXY, ISTIO
+* Igress reource supports domain(host) based routing[] and path based routing[]
+
+
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
 
