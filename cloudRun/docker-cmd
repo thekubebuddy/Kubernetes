@@ -1,0 +1,4 @@
+
+docker run --name php-sample-app2 --rm -p 8080:80 -e username="wordpress" -e servername="server1" -e password="password1234" php-app
+
+docker run --name php-sample-app2 --rm -p 8080:80 -e TARGET="wordpress1234" php-app

@@ -38,6 +38,9 @@ spec:
         name: wordpress
         ports:
         - containerPort: 80
+        env:
+        - name: APACHE_LOG_DIR
+          value: /var/log/wordpress
         resources:
           limits:
             cpu: 50m
@@ -48,8 +51,39 @@ spec:
         volumeMounts:
         - name: wp-data
           mountPath: /var/www/html
+        - name: log-storage
+          mountPath: /var/log/wordpress
+          
+      - name: sidecar-log-collector
+        image: smartbuddy/fluentd-agent:v1
+        command: ["/bin/sh","-c"]
+        args: ["/usr/sbin/td-agent"]
+        env:
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                  fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                  fieldPath: metadata.namespace
+        volumeMounts:
+        - name: log-storage
+          # readOnly: true
+          mountPath: /var/log/wordpress
+        - name: fluentd-config
+          mountPath: /etc/td-agent/
+        # - name: podinfo
+        #   mountPath: /etc/podinfo     
       volumes:
+      - name: fluentd-config
+        configMap:
+          name: fluentd-config
+      - name: log-storage
+        emptyDir: {}
       - name: wp-data
         hostPath:
           path: /tmp/wp-data/
+
+
 status: {}
