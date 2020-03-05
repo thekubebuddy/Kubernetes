@@ -1,0 +1,9 @@
+
+docker run --name php-sample-app2 --rm -p 8080:80 -e username="wordpress" -e servername="server1" -e password="password1234" -e PORT="80" php-app
+
+docker run --name php-sample-app2 --rm -p 8080:80 -e TARGET="wordpress1234" php-app
+
+gcloud builds submit --tag gcr.io/project-id/sample-php-app:v1
+
+
+
