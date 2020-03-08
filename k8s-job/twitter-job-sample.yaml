@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: twitter-consumer
+spec:
+  backoffLimit: 5
+  activeDeadlineSeconds: 20
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      containers:
+      - name: consumer
+        image: busybox
+        command: ["/bin/sh", "-c"]
+        args: ["echo 'Consuming data'; sleep 1; exit 1"]
+      restartPolicy: OnFailure

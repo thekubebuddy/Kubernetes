@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: nginx
+        command: ["/bin/bash","-c"]
+        args: ["echo Hello world;echo Hello nginx"]
+      restartPolicy: Never  
+  backoffLimit: 4
+  #parallelism: 2
+  ttlSecondsAfterFinished: 15
+  completions: 3
