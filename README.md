@@ -859,6 +859,17 @@ kubectl logs kube-proxy-ft6n7 -n kube-system
 
 
 
+### ETCD
+* ETCD is a high available distributed key-value store, which is simple,secure and fast
+* ETCD replicates the data within the cluster
+* A successfull write in etcd will be when the data is replicated in majority of the nodes
+* Only one node with etcd cluster is able to write and replicates the data among the other etcd node
+* It uses the **RAFT** algo to elect the master node in the etcd cluster
+
+
+
+
+
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
 
 (docker installation)[https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04]
