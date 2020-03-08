@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata: 
+  name: sample-quota-2
+spec:
+  hard:
+    requests.memory: "100Mi"
+    requests.cpu: "500m"
+    pods: "2"
+    services: "2"
