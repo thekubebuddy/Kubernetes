@@ -20,7 +20,10 @@ Table of Contents
    16. [Overcommitted state](#16-overcommit-state)
    17. [Two tier flask app](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/flask-two-tier-app.yaml)
    18. [Mysql stack on k8s with pv](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/mysql-with-pv-stack.yaml)
-   19. [Nginx ingress controller on minikube](https://github.com/kubernetes/ingress-nginx/blob/eedcdcdbf6ab319da435de8c266a1c156eb834b3/docs/deploy/index.md#minikube)
+   19. [Nginx ingress controller on minikube](https://github.com/kubernetes/ingress-nginx/blob/eedcdcdbf6ab319da435de8c266a1c156eb834b3/docs/deploy/
+   index.md#minikube)
+   20. [Increment the size of pvc]()
+   21. [Kustomize in Kubernetes]
 
 ### 1. Quick installation of k8s components
 ```
@@ -865,6 +868,13 @@ kubectl logs kube-proxy-ft6n7 -n kube-system
 * A successfull write in etcd will be when the data is replicated in majority of the nodes
 * Only one node with etcd cluster is able to write and replicates the data among the other etcd node
 * It uses the **RAFT** algo to elect the master node in the etcd cluster
+
+
+# Increment the size of pvc
+```
+k edit pvc <pvc-name>
+k delete po <which-mounts-tht-pvc>
+```
 
 
 
