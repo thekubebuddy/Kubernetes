@@ -28,7 +28,7 @@ spec:
   strategy: {}
   template:
     metadata:
-          labels:
+      labels:
         app: frontend-1
     spec:
       containers:
@@ -65,7 +65,7 @@ spec:
   strategy: {}
   template:
     metadata:
-          labels:
+      labels:
         app: frontend-2
     spec:
       containers:
