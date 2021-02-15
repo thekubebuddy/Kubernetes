@@ -20,10 +20,7 @@ Table of Contents
    16. [Overcommitted state](#16-overcommit-state)
    17. [Two tier flask app](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/flask-two-tier-app.yaml)
    18. [Mysql stack on k8s with pv](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/mysql-with-pv-stack.yaml)
-   19. [Nginx ingress controller on minikube](https://github.com/kubernetes/ingress-nginx/blob/eedcdcdbf6ab319da435de8c266a1c156eb834b3/docs/deploy/
-   index.md#minikube)
-   20. [Increment the size of pvc]()
-   21. [Kustomize in Kubernetes]
+   19. [Nginx ingress controller on minikube](https://github.com/kubernetes/ingress-nginx/blob/eedcdcdbf6ab319da435de8c266a1c156eb834b3/docs/deploy/index.md#minikube)
 
 ### 1. Quick installation of k8s components
 ```
@@ -882,4 +879,3 @@ k delete po <which-mounts-tht-pvc>
 
 1. [Network CNI issue](https://stackoverflow.com/questions/44305615/pods-are-not-starting-networkplugin-cni-failed-to-set-up-pod)
 
-(docker installation)[https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04]
