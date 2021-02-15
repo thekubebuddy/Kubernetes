@@ -1,0 +1,7 @@
+resources:
+- rbac.yaml
+- controller.yaml
+- node.yaml
+- csi-driver.yaml
+- sc.yaml
+

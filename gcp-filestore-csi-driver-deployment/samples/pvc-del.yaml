@@ -1,0 +1,12 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: test-pvc-fs
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: fs-del-rp-sc
+  resources:
+    requests:
+      storage: 1Ti

@@ -1,0 +1,14 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: fs-ret-rp-sc
+provisioner: filestore.csi.storage.gke.io
+reclaimPolicy: Retain
+parameters:
+  # Name of the VPC. Note that non-default VPCs require special firewall rules to be setup
+  network: pilot-unbxd-main-vpc
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+
+#https://github.com/kubernetes-sigs/gcp-filestore-csi-driver#supported-createvolume-parameters

@@ -1,0 +1,12 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: webserver-fs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: fs-ret-rp-sc
+  resources:
+    requests:
+      storage: 1Ti

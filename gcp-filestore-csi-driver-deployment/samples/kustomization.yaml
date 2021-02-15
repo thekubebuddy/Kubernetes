@@ -1,0 +1,4 @@
+resources:
+- pvc.yaml
+- fs-depl.yaml
+
