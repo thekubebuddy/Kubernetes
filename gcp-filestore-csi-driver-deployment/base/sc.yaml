@@ -7,8 +7,8 @@ provisioner: filestore.csi.storage.gke.io
 reclaimPolicy: Retain
 parameters:
   # Name of the VPC. Note that non-default VPCs require special firewall rules to be setup
-  network: pilot-unbxd-main-vpc
-  tier: standard
+  #network: default
+  #tier: standard
 volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
 
