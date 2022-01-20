@@ -1,0 +1,15 @@
+# trivy image --severity=CRITICAL node:16.10-alpine 
+# docker build -t node:16.10-alpine-fix -f Dockerfile.node .
+# trivy image --severity=CRITICAL node:16.10-alpine-fix
+
+# docker save nginx:alpine > nginx-alpine.tar
+# trivy image --input ./nginx.tar
+
+FROM node:16.10-alpine AS base
+
+# For some old alpine version vulnerabilities
+RUN apk update
+RUN apk upgrade
+
+# Latest npm which does not use json-schema
+RUN npm i -g npm@8.1.4
