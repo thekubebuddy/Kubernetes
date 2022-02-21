@@ -1,0 +1,39 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-smb
+  labels:
+    app: busybox
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: busybox
+      labels:
+        app: busybox
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": windows
+      containers:
+        - name: busybox
+          image: e2eteam/busybox:1.29
+          command:
+            - "powershell.exe"
+            - "-Command"
+            - "while (1) { Add-Content -Encoding Ascii C:\\pv\\pv-smb\\data.txt $(Get-Date -Format u); sleep 1 }"
+          volumeMounts:
+            - name: smb
+              mountPath: "/pv/pv-smb"
+      tolerations:
+        - key: "node.kubernetes.io/os"
+          operator: "Exists"
+          effect: "NoSchedule"
+      volumes:
+        - name: smb
+          persistentVolumeClaim:
+            claimName: pvc-smb-01
+  selector:
+    matchLabels:
+      app: busybox

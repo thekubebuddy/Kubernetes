@@ -21,6 +21,10 @@ Table of Contents
    17. [Two tier flask app](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/flask-two-tier-app.yaml)
    18. [Mysql stack on k8s with pv](https://raw.githubusercontent.com/ishaq4466/Kubernetes/master/mysql-with-pv-stack.yaml)
    19. [Nginx ingress controller on minikube](https://github.com/kubernetes/ingress-nginx/blob/eedcdcdbf6ab319da435de8c266a1c156eb834b3/docs/deploy/index.md#minikube)
+   20. SMB Fileshare with windows containers for RWX access modes
+   21. Internal GKE ingress with self-signed TLS cert.
+   22. 
+
 
 ### 1. Quick installation of k8s components
 ```
